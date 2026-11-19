@@ -1,0 +1,23 @@
+artifact_path: /home/ubuntu/work/G196_MP020/G196_MP020/mlruns/1/models/m-24efd15ff4ca4a84b3cadab8c4333e43/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.12.3
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.5.2
+    skops_trusted_types: null
+mlflow_version: 3.15.0
+model_id: m-24efd15ff4ca4a84b3cadab8c4333e43
+model_size_bytes: 32948928
+model_uuid: m-24efd15ff4ca4a84b3cadab8c4333e43
+prompts: null
+run_id: b818e99479cf47fd8e6f00cf328d798c
+utc_time_created: '2026-11-19 07:51:00.736142'

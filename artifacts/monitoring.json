@@ -1,0 +1,21 @@
+{
+  "psi": {
+    "highway_distance_km": 5.547691170511403,
+    "nearby_pumps": 0.023706298543701605,
+    "price_rs": 0.010495552018887178,
+    "trucks_passing": 0.019326524293750993,
+    "temp_c": 0.037516232096561755,
+    "staff": 0.03741698566510754
+  },
+  "mae_by_group": {
+    "City": 5377.000189826876,
+    "Highway": 3329.6182284584675,
+    "Industrial": 4038.0388073006534
+  },
+  "mae_v1_on_check": 5433.633574986623,
+  "mae_v2_on_check": 2160.720627516326,
+  "decision": "promote",
+  "v2_version": 8,
+  "most_drifted_feature": "highway_distance_km",
+  "worst_served_group": "City"
+}

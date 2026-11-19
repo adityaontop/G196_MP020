@@ -1,0 +1,53 @@
+group_id: G196
+problem_id: MP020
+data_issues:
+  leaking_column:
+    present: true
+    column: litres_from_tank_dip_next_day
+  unit_mixup:
+    present: true
+    column: price_rs
+    group_value: Industrial
+    factor: 100
+  sentinel_value:
+    present: true
+    column: price_rs
+    value: 9999
+    count: 1
+  duplicate_rows:
+    present: false
+    count: null
+  stuck_sensor:
+    present: false
+    column: null
+    start_date: null
+    end_date: null
+  target_typos:
+    present: true
+    count: 14
+  spelling_variants:
+    present: true
+    column: ownership
+    true_levels: 3
+tracking:
+  experiment_name: null
+  best_run_id: null
+  registered_model_name: null
+  champion_version: null
+monitoring:
+  psi:
+    highway_distance_km: null
+    nearby_pumps: null
+    price_rs: null
+    trucks_passing: null
+    temp_c: null
+    staff: null
+  most_drifted_feature: null
+  mae_by_group:
+    Highway: null
+    City: null
+    Industrial: null
+  worst_served_group: null
+  mae_v1_on_check: null
+  mae_v2_on_check: null
+  decision: null
