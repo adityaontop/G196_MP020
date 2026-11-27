@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: mp020-api
 spec:
+  # Run four replicas to provide capacity and keep the service available.
   replicas: 4
   selector:
     matchLabels:
@@ -14,15 +15,18 @@ spec:
     spec:
       containers:
         - name: mp020-api
+          # Use the image tag built from the project Dockerfile.
           image: mp020-api:1.0
           ports:
             - containerPort: 8000
+          # Mark a pod ready for traffic after its health endpoint responds.
           readinessProbe:
             httpGet:
               path: /health
               port: 8000
             initialDelaySeconds: 5
             periodSeconds: 10
+          # Restart the container if it stops responding after startup.
           livenessProbe:
             httpGet:
               path: /health
