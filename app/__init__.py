@@ -1059,3 +1059,27 @@
 # print("Number of Students Passed:", len(df[df['Percentage'] >= 40]))
 
 # # End of Program
+
+
+# # Student Marks Analysis System
+# # Using Python, NumPy, Pandas and Matplotlib
+
+# # Importing required libraries
+# import numpy as np
+# import pandas as pd
+# import matplotlib.pyplot as plt
+
+# # Creating a dataset of students
+# data = {
+#     'Name': ['Aman', 'Rahul', 'Naman', 'Priya', 'Simran',
+#              'Karan', 'Rohit', 'Anjali', 'Vikas', 'Neha'],
+#     'Maths': [85, 78, 92, 88, 76, 67, 81, 95, 72, 89],
+#     'Science': [90, 82, 88, 91, 79, 70, 85, 94, 75, 87],
+#     'English': [78, 85, 90, 82, 88, 74, 80, 92, 77, 86]
+# }
+
+# # Converting dictionary into DataFrame
+# df = pd.DataFrame(data)
+
+# # Displaying original dataset
+# print("STUDENT MARKS DATA")
