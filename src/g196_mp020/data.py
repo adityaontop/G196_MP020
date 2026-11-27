@@ -20,6 +20,7 @@ def sha256_file(path: str | Path) -> str:
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+# Map spelling/abbreviation variants onto the three canonical training categories.
 def canonical_ownership(value: Any) -> str:
     text = str(value).strip().lower().replace(".", "").replace("_", " ")
     mapping = {
@@ -35,17 +36,21 @@ def clean_frame(frame: pd.DataFrame, *, has_target: bool = True) -> pd.DataFrame
     df = frame.copy()
     if "date" in df.columns:
         df["date"] = pd.to_datetime(df["date"], errors="coerce")
+    # Repair the known zone-specific unit mix-up before treating extreme prices as missing.
     # Industrial rows were recorded in paise-like 100x units; normalize only clear anomalies.
     industrial = df["zone"].astype(str).str.strip().str.lower().eq("industrial")
     df.loc[industrial & (df["price_rs"] > 500), "price_rs"] /= 100.0
     df.loc[df["price_rs"] >= 500, "price_rs"] = np.nan
+    # The sentinel is not a valid observation; median imputation keeps the row usable.
     # The known sentinel is missing information, not a real price.
     df["price_rs"] = df["price_rs"].fillna(df["price_rs"].median())
     df["ownership"] = df["ownership"].map(canonical_ownership)
     df["zone"] = df["zone"].astype(str).str.strip().str.title()
     if has_target and TARGET in df:
+        # Correct only the identified extra-zero scale errors in the target column.
         typo = df[TARGET] > 100000
         df.loc[typo, TARGET] = df.loc[typo, TARGET] / 10.0
+    # Drop target and post-event tank-dip measurement to prevent label leakage.
     # Never expose post-event information to the model.
     feature = df.drop(columns=[LEAKING_COLUMN, TARGET], errors="ignore")
     if "date" in feature.columns:
@@ -53,6 +58,7 @@ def clean_frame(frame: pd.DataFrame, *, has_target: bool = True) -> pd.DataFrame
         feature["day_of_week"] = feature["date"].dt.dayofweek
         feature["day_of_year"] = feature["date"].dt.dayofyear
     else:
+        # The serving contract has no date; these neutral values keep feature columns aligned.
         # The live API contract has no date field; use neutral defaults for date features.
         feature["month"] = 1
         feature["day_of_week"] = 0
@@ -75,6 +81,7 @@ def detect_issues(train: pd.DataFrame, holdout: pd.DataFrame, later: pd.DataFram
     industrial = df.loc[df.zone.eq("Industrial"), "price_rs"]
     normal = df.loc[~df.zone.eq("Industrial"), "price_rs"]
     unit_present = bool(len(industrial) and industrial.median() > normal.median() * 50)
+    # A run of five or more identical consecutive readings is flagged for investigation.
     # A stuck-sensor detector: exact repeated values in a contiguous run after date sorting.
     stuck = {"present": False, "column": None, "start_date": None, "end_date": None}
     ordered = df.sort_values("date").reset_index(drop=True)
